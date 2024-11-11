@@ -47,9 +47,8 @@ local function download_binary(bin_path, download_url)
 end
 
 local function setup_keymaps(keymap, bin_path)
-    vim.keymap.set("n", keymap, function()
-        require("toggleterm").exec(bin_path, 9, 0, LazyVim.root.get(), "float")
-    end, { noremap = true, silent = true })
+    vim.keymap.set("n", keymap, ":9TermExec cmd=" .. bin_path .. "directtion=float<CR>",
+    { noremap = true, silent = true })
 end
 
 function M.setup(opts)
