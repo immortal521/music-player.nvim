@@ -50,6 +50,7 @@ end
 
 function M.setup(opts)
     opts = vim.tbl_deep_extend("force", default_opts, opts or {})
+    vim.notify("opts", 1, opts)
     download_binary(opts.bin_path, opts.download_url)
     setup_keymaps(opts.keymap, opts.bin_path)
 end
