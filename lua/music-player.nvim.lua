@@ -13,17 +13,27 @@ local function get_download_url()
     end
 end
 
+local function ensure_dir_exists(dir)
+    -- 使用 vim.fn.mkdir 来创建目录，如果目录已经存在则不会报错
+    vim.fn.mkdir(dir, "p") -- "p" 参数表示创建父目录（如果需要）
+end
+
 local function get_bin_path()
-    local base_url = vim.fn.stdpath("data") .. "/music-player.nvim/bin/music-player"
+    local base_url = vim.fn.stdpath("data") .. "/lazy/lazy/music-player.nvim/bin/music-player"
     local os_type = jit.os
+    local url = nil
     if os_type == "Linux" then
-        return base_url -- Linux 系统的二进制文件
+        url = base_url -- Linux 系统的二进制文件
     elseif os_type == "Windows" then
-        return base_url .. ".exe" -- Windows 系统的二进制文件
+        url = base_url:gsub("/", "\\") .. ".exe" -- Windows 系统的二进制文件
     else
         vim.notify("Unsupported OS: " .. os_type, vim.log.levels.ERROR)
         return nil
     end
+
+    ensure_dir_exists(url)
+
+    return url
 end
 
 local default_opts = {
@@ -40,17 +50,13 @@ local function download_binary(bin_path, download_url)
 end
 
 local function setup_keymaps(keymap, bin_path)
-    vim.api.nvim_set_keymap(
-        "n",
-        keymap,
-        ":9TermExec cmd=" .. bin_path .. "direction=float" .. "<CR>",
-        { noremap = true, silent = true }
-    )
+    vim.keymap.set("n", keymap, function()
+        require("toggleterm").exec(bin_path, 9, 0, vim.loop.cwd(), "float")
+    end, { noremap = true, silent = true })
 end
 
 function M.setup(opts)
     opts = vim.tbl_deep_extend("force", default_opts, opts or {})
-    vim.notify("opts", 1, opts)
     download_binary(opts.bin_path, opts.download_url)
     setup_keymaps(opts.keymap, opts.bin_path)
 end
