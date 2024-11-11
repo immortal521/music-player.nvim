@@ -1,5 +1,11 @@
 local M = {}
 
+local term = package.loaded["toggleterm"]
+
+if not term then
+    term = require("toggleterm")
+end
+
 local function get_download_url()
     local base_url = "https://github.com/immortal521/bucketApps/releases/download/music-player/music-player"
     local os_type = jit.os
@@ -48,8 +54,7 @@ end
 
 local function setup_keymaps(keymap, bin_path)
     vim.keymap.set("n", keymap, function()
-            -- 使用 TermExec 命令并传递正确的参数
-            vim.cmd(":9TermExec cmd='" .. bin_path .. "' direction=float")
+            term.exec(bin_path, 9, 0, vim.loop.cwd(), "float")
         end,
         { noremap = true, silent = true })
 end
