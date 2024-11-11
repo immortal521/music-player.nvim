@@ -4,7 +4,7 @@ local function get_download_url()
     local base_url = "https://github.com/immortal521/bucketApps/releases/download/music-player/music-player"
     local os_type = jit.os
     if os_type == "Linux" then
-        return base_url -- Linux 系统的二进制文件
+        return base_url           -- Linux 系统的二进制文件
     elseif os_type == "Windows" then
         return base_url .. ".exe" -- Windows 系统的二进制文件
     else
@@ -19,21 +19,18 @@ local function ensure_dir_exists(dir)
 end
 
 local function get_bin_path()
-    local base_url = vim.fn.stdpath("data") .. "/lazy/lazy/nvim-music-player/bin/music-player"
+    local base_url = vim.fn.stdpath("data") .. "/lazy/nvim-music-player/bin/"
+
+    ensure_dir_exists(base_url)
     local os_type = jit.os
-    local url = nil
     if os_type == "Linux" then
-        url = base_url -- Linux 系统的二进制文件
+        return base_url .. "music-player"
     elseif os_type == "Windows" then
-        url = base_url:gsub("/", "\\") .. ".exe" -- Windows 系统的二进制文件
+        return base_url:gsub("/", "\\") .. "music-player.exe" -- Windows 系统的二进制文件
     else
         vim.notify("Unsupported OS: " .. os_type, vim.log.levels.ERROR)
         return nil
     end
-
-    ensure_dir_exists(url)
-
-    return url
 end
 
 local default_opts = {
