@@ -53,7 +53,7 @@ end
 
 local function setup_keymaps(keymap, bin_path)
     vim.keymap.set("n", keymap, function()
-        require("toggleterm").exec(bin_path, 9, 0, vim.loop.cwd(), "float")
+        require("toggleterm").exec(bin_path, 9, 0, LazyVim.root.get(), "float")
     end, { noremap = true, silent = true })
 end
 
