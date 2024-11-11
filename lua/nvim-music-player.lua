@@ -43,6 +43,11 @@ local function download_binary(bin_path, download_url)
     if not vim.fn.filereadable(bin_path) then
         local cmd = string.format("wget -O %s %s", bin_path, download_url)
         vim.fn.system(cmd)
+        if vim.v.shell_error ~= 0 then
+            vim.notify("Failed to download binary from " .. download_url, vim.log.levels.ERROR)
+        else
+            vim.notify("Binary downloaded successfully!", vim.log.levels.INFO)
+        end
     end
 end
 
