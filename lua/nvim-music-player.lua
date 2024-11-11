@@ -19,7 +19,7 @@ local function ensure_dir_exists(dir)
 end
 
 local function get_bin_path()
-    local base_url = vim.fn.stdpath("data") .. "/lazy/lazy/music-player.nvim/bin/music-player"
+    local base_url = vim.fn.stdpath("data") .. "/lazy/lazy/nvim-music-player/bin/music-player"
     local os_type = jit.os
     local url = nil
     if os_type == "Linux" then
