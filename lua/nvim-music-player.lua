@@ -4,7 +4,7 @@ local function get_download_url()
     local base_url = "https://github.com/immortal521/bucketApps/releases/download/music-player/music-player"
     local os_type = jit.os
     if os_type == "Linux" then
-        return base_url           -- Linux 系统的二进制文件
+        return base_url -- Linux 系统的二进制文件
     elseif os_type == "Windows" then
         return base_url .. ".exe" -- Windows 系统的二进制文件
     else
@@ -41,7 +41,7 @@ local default_opts = {
 
 local function download_binary(bin_path, download_url)
     if not vim.fn.filereadable(bin_path) then
-        local cmd = string.format("curl -L -o %s %s", bin_path, download_url)
+        local cmd = string.format("wget -O %s %s", bin_path, download_url)
         vim.fn.system(cmd)
     end
 end
